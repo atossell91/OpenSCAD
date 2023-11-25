@@ -102,8 +102,8 @@ module foot_sketch(width, length, angle, rev_len = 0) {
 
 module feet() {
     rad = max_diam/2;
-    len = sqrt(2*rad*rad) - rad;
-    width = 2;
+    width = 3;
+    len = sqrt(2 * rad*rad) - rad - sqrt(width)/4;
     offset = -max_diam/2;
 
     linear_extrude(wall_depth + panel_thickness) {
@@ -184,6 +184,26 @@ module shell_bottom() {
     feet();
 }
 
-translate([0, 0, panel_thickness+0.5])
+module flat_guides() {
+    rWidth = 100;
+    rHeight = 20;
+
+    xTrans = rWidth/2;
+    yTrans = rHeight +max_diam/2;
+
+    %translate([-xTrans, -yTrans, 0])
+    square([rWidth, rHeight]);
+
+    %translate([-yTrans, -xTrans, 0])
+    square([rHeight, rWidth]);
+
+    %translate([yTrans - rHeight, -xTrans, 0])
+    square([rHeight, rWidth]);
+}
+
+translate([0, 0, panel_thickness])
+color([0.6, 0.8, 1])
 shell_top();
+
+color([0.2, 0.4, 1])
 shell_bottom();
